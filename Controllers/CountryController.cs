@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,29 +14,14 @@ public class CountryController : Controller
     public CountryController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Countries
-            .Select(c => new CountryViewModel
-            {
-                CountryId = c.CountryId,
-                CountryName = c.CountryName,
-                RegionId = c.RegionId,
-                RegionName = c.Region.RegionName,
-                Region = c.Region
-            }).ToListAsync());
+        View((await _context.Countries.Include(c => c.Region).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var country = await _context.Countries.Include(c => c.Region).FirstOrDefaultAsync(m => m.CountryId == id);
         if (country == null) return NotFound();
-        return View(new CountryViewModel
-        {
-            CountryId = country.CountryId,
-            CountryName = country.CountryName,
-            RegionId = country.RegionId,
-            RegionName = country.Region?.RegionName,
-            Region = country.Region
-        });
+        return View(country.ToViewModel());
     }
 
     public IActionResult Create()
@@ -48,8 +35,7 @@ public class CountryController : Controller
     {
         if (ModelState.IsValid)
         {
-            var country = new Country { CountryName = vm.CountryName, RegionId = vm.RegionId };
-            _context.Add(country);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,7 +50,7 @@ public class CountryController : Controller
         if (country == null) return NotFound();
 
         ViewBag.RegionId = new SelectList(_context.Regions, "RegionId", "RegionName", country.RegionId);
-        return View(new CountryViewModel { CountryId = country.CountryId, CountryName = country.CountryName, RegionId = country.RegionId });
+        return View(country.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -98,14 +84,7 @@ public class CountryController : Controller
         if (id == null) return NotFound();
         var country = await _context.Countries.Include(c => c.Region).FirstOrDefaultAsync(m => m.CountryId == id);
         if (country == null) return NotFound();
-        return View(new CountryViewModel
-        {
-            CountryId = country.CountryId,
-            CountryName = country.CountryName,
-            RegionId = country.RegionId,
-            RegionName = country.Region?.RegionName,
-            Region = country.Region
-        });
+        return View(country.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

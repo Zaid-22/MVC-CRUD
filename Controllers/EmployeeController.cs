@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,29 +14,14 @@ public class EmployeeController : Controller
     public EmployeeController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Employees
-            .Select(e => new EmployeeViewModel
-            {
-                EmployeeId = e.EmployeeId,
-                EmployeeName = e.EmployeeName,
-                SectionId = e.SectionId,
-                SectionName = e.Section.SectionName,
-                Section = e.Section
-            }).ToListAsync());
+        View((await _context.Employees.Include(e => e.Section).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var employee = await _context.Employees.Include(e => e.Section).FirstOrDefaultAsync(m => m.EmployeeId == id);
         if (employee == null) return NotFound();
-        return View(new EmployeeViewModel
-        {
-            EmployeeId = employee.EmployeeId,
-            EmployeeName = employee.EmployeeName,
-            SectionId = employee.SectionId,
-            SectionName = employee.Section?.SectionName,
-            Section = employee.Section
-        });
+        return View(employee.ToViewModel());
     }
 
     public IActionResult Create()
@@ -48,8 +35,7 @@ public class EmployeeController : Controller
     {
         if (ModelState.IsValid)
         {
-            var employee = new Employee { EmployeeName = vm.EmployeeName, SectionId = vm.SectionId };
-            _context.Add(employee);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,7 +50,7 @@ public class EmployeeController : Controller
         if (employee == null) return NotFound();
 
         ViewBag.SectionId = new SelectList(_context.Sections, "SectionId", "SectionName", employee.SectionId);
-        return View(new EmployeeViewModel { EmployeeId = employee.EmployeeId, EmployeeName = employee.EmployeeName, SectionId = employee.SectionId });
+        return View(employee.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -98,14 +84,7 @@ public class EmployeeController : Controller
         if (id == null) return NotFound();
         var employee = await _context.Employees.Include(e => e.Section).FirstOrDefaultAsync(m => m.EmployeeId == id);
         if (employee == null) return NotFound();
-        return View(new EmployeeViewModel
-        {
-            EmployeeId = employee.EmployeeId,
-            EmployeeName = employee.EmployeeName,
-            SectionId = employee.SectionId,
-            SectionName = employee.Section?.SectionName,
-            Section = employee.Section
-        });
+        return View(employee.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Models;
 
-namespace MvcCrudProject.Models;
+namespace MvcCrudProject.Data;
 
 public class AppDbContext : DbContext
 {

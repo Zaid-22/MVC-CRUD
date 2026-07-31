@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,28 +14,14 @@ public class ContinentController : Controller
     public ContinentController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Continents.Include(c => c.Planet).Select(c => new ContinentViewModel
-        {
-            ContinentId = c.ContinentId,
-            ContinentName = c.ContinentName,
-            PlanetId = c.PlanetId,
-            PlanetName = c.Planet.PlanetName,
-            Planet = c.Planet
-        }).ToListAsync());
+        View((await _context.Continents.Include(c => c.Planet).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var continent = await _context.Continents.Include(c => c.Planet).FirstOrDefaultAsync(m => m.ContinentId == id);
         if (continent == null) return NotFound();
-        return View(new ContinentViewModel
-        {
-            ContinentId = continent.ContinentId,
-            ContinentName = continent.ContinentName,
-            PlanetId = continent.PlanetId,
-            PlanetName = continent.Planet?.PlanetName,
-            Planet = continent.Planet
-        });
+        return View(continent.ToViewModel());
     }
 
     public IActionResult Create()
@@ -47,8 +35,7 @@ public class ContinentController : Controller
     {
         if (ModelState.IsValid)
         {
-            var continent = new Continent { ContinentName = vm.ContinentName, PlanetId = vm.PlanetId };
-            _context.Add(continent);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -63,7 +50,7 @@ public class ContinentController : Controller
         if (continent == null) return NotFound();
 
         ViewBag.PlanetId = new SelectList(_context.Planets, "PlanetId", "PlanetName", continent.PlanetId);
-        return View(new ContinentViewModel { ContinentId = continent.ContinentId, ContinentName = continent.ContinentName, PlanetId = continent.PlanetId });
+        return View(continent.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -97,14 +84,7 @@ public class ContinentController : Controller
         if (id == null) return NotFound();
         var continent = await _context.Continents.Include(c => c.Planet).FirstOrDefaultAsync(m => m.ContinentId == id);
         if (continent == null) return NotFound();
-        return View(new ContinentViewModel
-        {
-            ContinentId = continent.ContinentId,
-            ContinentName = continent.ContinentName,
-            PlanetId = continent.PlanetId,
-            PlanetName = continent.Planet?.PlanetName,
-            Planet = continent.Planet
-        });
+        return View(continent.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

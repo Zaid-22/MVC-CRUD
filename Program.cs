@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Models;
+using MvcCrudProject.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

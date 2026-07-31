@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -11,16 +13,14 @@ public class GalaxyController : Controller
     public GalaxyController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Galaxies
-            .Select(g => new GalaxyViewModel { GalaxyId = g.GalaxyId, GalaxyName = g.GalaxyName })
-            .ToListAsync());
+        View((await _context.Galaxies.ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var galaxy = await _context.Galaxies.FirstOrDefaultAsync(m => m.GalaxyId == id);
         if (galaxy == null) return NotFound();
-        return View(new GalaxyViewModel { GalaxyId = galaxy.GalaxyId, GalaxyName = galaxy.GalaxyName });
+        return View(galaxy.ToViewModel());
     }
 
     public IActionResult Create() => View();
@@ -30,8 +30,7 @@ public class GalaxyController : Controller
     {
         if (ModelState.IsValid)
         {
-            var galaxy = new Galaxy { GalaxyName = vm.GalaxyName };
-            _context.Add(galaxy);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -43,7 +42,7 @@ public class GalaxyController : Controller
         if (id == null) return NotFound();
         var galaxy = await _context.Galaxies.FindAsync(id);
         if (galaxy == null) return NotFound();
-        return View(new GalaxyViewModel { GalaxyId = galaxy.GalaxyId, GalaxyName = galaxy.GalaxyName });
+        return View(galaxy.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -75,7 +74,7 @@ public class GalaxyController : Controller
         if (id == null) return NotFound();
         var galaxy = await _context.Galaxies.FirstOrDefaultAsync(m => m.GalaxyId == id);
         if (galaxy == null) return NotFound();
-        return View(new GalaxyViewModel { GalaxyId = galaxy.GalaxyId, GalaxyName = galaxy.GalaxyName });
+        return View(galaxy.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

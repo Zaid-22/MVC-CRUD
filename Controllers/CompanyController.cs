@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -11,16 +13,14 @@ public class CompanyController : Controller
     public CompanyController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Companies
-            .Select(c => new CompanyViewModel { CompanyId = c.CompanyId, CompanyName = c.CompanyName })
-            .ToListAsync());
+        View((await _context.Companies.ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var company = await _context.Companies.FirstOrDefaultAsync(m => m.CompanyId == id);
         if (company == null) return NotFound();
-        return View(new CompanyViewModel { CompanyId = company.CompanyId, CompanyName = company.CompanyName });
+        return View(company.ToViewModel());
     }
 
     public IActionResult Create() => View();
@@ -30,7 +30,7 @@ public class CompanyController : Controller
     {
         if (ModelState.IsValid)
         {
-            var company = new Company { CompanyName = vm.CompanyName };
+            var company = vm.ToModel();
             _context.Add(company);
             await _context.SaveChangesAsync();
             return RedirectToAction("Create", "Branch", new { companyId = company.CompanyId });
@@ -43,7 +43,7 @@ public class CompanyController : Controller
         if (id == null) return NotFound();
         var company = await _context.Companies.FindAsync(id);
         if (company == null) return NotFound();
-        return View(new CompanyViewModel { CompanyId = company.CompanyId, CompanyName = company.CompanyName });
+        return View(company.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -75,7 +75,7 @@ public class CompanyController : Controller
         if (id == null) return NotFound();
         var company = await _context.Companies.FirstOrDefaultAsync(m => m.CompanyId == id);
         if (company == null) return NotFound();
-        return View(new CompanyViewModel { CompanyId = company.CompanyId, CompanyName = company.CompanyName });
+        return View(company.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

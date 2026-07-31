@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,28 +14,14 @@ public class PlanetController : Controller
     public PlanetController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Planets
-            .Select(p => new PlanetViewModel
-            {
-                PlanetId = p.PlanetId,
-                PlanetName = p.PlanetName,
-                GalaxyId = p.GalaxyId,
-                GalaxyName = p.Galaxy.GalaxyName
-            }).ToListAsync());
+        View((await _context.Planets.Include(p => p.Galaxy).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var planet = await _context.Planets.Include(p => p.Galaxy).FirstOrDefaultAsync(m => m.PlanetId == id);
         if (planet == null) return NotFound();
-        var vm = new PlanetViewModel
-        {
-            PlanetId = planet.PlanetId,
-            PlanetName = planet.PlanetName,
-            GalaxyId = planet.GalaxyId,
-            GalaxyName = planet.Galaxy?.GalaxyName
-        };
-        return View(vm);
+        return View(planet.ToViewModel());
     }
 
     public IActionResult Create()
@@ -47,12 +35,7 @@ public class PlanetController : Controller
     {
         if (ModelState.IsValid)
         {
-            var planet = new Planet
-            {
-                PlanetName = vm.PlanetName,
-                GalaxyId = vm.GalaxyId
-            };
-            _context.Add(planet);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -66,14 +49,8 @@ public class PlanetController : Controller
         var planet = await _context.Planets.FindAsync(id);
         if (planet == null) return NotFound();
 
-        var vm = new PlanetViewModel
-        {
-            PlanetId = planet.PlanetId,
-            PlanetName = planet.PlanetName,
-            GalaxyId = planet.GalaxyId
-        };
         ViewBag.GalaxyId = new SelectList(_context.Galaxies, "GalaxyId", "GalaxyName", planet.GalaxyId);
-        return View(vm);
+        return View(planet.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -86,10 +63,8 @@ public class PlanetController : Controller
             {
                 var planet = await _context.Planets.FindAsync(id);
                 if (planet == null) return NotFound();
-
                 planet.PlanetName = vm.PlanetName;
                 planet.GalaxyId = vm.GalaxyId;
-
                 _context.Update(planet);
                 await _context.SaveChangesAsync();
             }
@@ -109,14 +84,7 @@ public class PlanetController : Controller
         if (id == null) return NotFound();
         var planet = await _context.Planets.Include(p => p.Galaxy).FirstOrDefaultAsync(m => m.PlanetId == id);
         if (planet == null) return NotFound();
-        var vm = new PlanetViewModel
-        {
-            PlanetId = planet.PlanetId,
-            PlanetName = planet.PlanetName,
-            GalaxyId = planet.GalaxyId,
-            GalaxyName = planet.Galaxy?.GalaxyName
-        };
-        return View(vm);
+        return View(planet.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

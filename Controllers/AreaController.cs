@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Mappings;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -13,15 +14,7 @@ public class AreaController : Controller
     public AreaController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Areas
-            .Select(a => new AreaViewModel
-            {
-                AreaId = a.AreaId,
-                AreaName = a.AreaName,
-                CityId = a.CityId,
-                CityName = a.City.CityName,
-                City = a.City
-            }).ToListAsync());
+        View((await _context.Areas.Include(a => a.City).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
@@ -42,8 +35,7 @@ public class AreaController : Controller
     {
         if (ModelState.IsValid)
         {
-            var area = vm.ToEntity();
-            _context.Add(area);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -71,7 +63,8 @@ public class AreaController : Controller
             {
                 var area = await _context.Areas.FindAsync(id);
                 if (area == null) return NotFound();
-                vm.UpdateEntity(area);
+                area.AreaName = vm.AreaName;
+                area.CityId = vm.CityId;
                 _context.Update(area);
                 await _context.SaveChangesAsync();
             }

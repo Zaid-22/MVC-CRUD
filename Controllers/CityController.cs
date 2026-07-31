@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,29 +14,14 @@ public class CityController : Controller
     public CityController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Cities
-            .Select(c => new CityViewModel
-            {
-                CityId = c.CityId,
-                CityName = c.CityName,
-                CountryId = c.CountryId,
-                CountryName = c.Country.CountryName,
-                Country = c.Country
-            }).ToListAsync());
+        View((await _context.Cities.Include(c => c.Country).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var city = await _context.Cities.Include(c => c.Country).FirstOrDefaultAsync(m => m.CityId == id);
         if (city == null) return NotFound();
-        return View(new CityViewModel
-        {
-            CityId = city.CityId,
-            CityName = city.CityName,
-            CountryId = city.CountryId,
-            CountryName = city.Country?.CountryName,
-            Country = city.Country
-        });
+        return View(city.ToViewModel());
     }
 
     public IActionResult Create()
@@ -48,8 +35,7 @@ public class CityController : Controller
     {
         if (ModelState.IsValid)
         {
-            var city = new City { CityName = vm.CityName, CountryId = vm.CountryId };
-            _context.Add(city);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,7 +50,7 @@ public class CityController : Controller
         if (city == null) return NotFound();
 
         ViewBag.CountryId = new SelectList(_context.Countries, "CountryId", "CountryName", city.CountryId);
-        return View(new CityViewModel { CityId = city.CityId, CityName = city.CityName, CountryId = city.CountryId });
+        return View(city.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -98,14 +84,7 @@ public class CityController : Controller
         if (id == null) return NotFound();
         var city = await _context.Cities.Include(c => c.Country).FirstOrDefaultAsync(m => m.CityId == id);
         if (city == null) return NotFound();
-        return View(new CityViewModel
-        {
-            CityId = city.CityId,
-            CityName = city.CityName,
-            CountryId = city.CountryId,
-            CountryName = city.Country?.CountryName,
-            Country = city.Country
-        });
+        return View(city.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

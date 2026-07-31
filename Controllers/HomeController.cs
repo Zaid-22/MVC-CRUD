@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
 using MvcCrudProject.Models;
 
 namespace MvcCrudProject.Controllers;

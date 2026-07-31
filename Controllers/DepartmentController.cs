@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,29 +14,14 @@ public class DepartmentController : Controller
     public DepartmentController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Departments
-            .Select(d => new DepartmentViewModel
-            {
-                DepartmentId = d.DepartmentId,
-                DepartmentName = d.DepartmentName,
-                BranchId = d.BranchId,
-                BranchName = d.Branch.BranchName,
-                Branch = d.Branch
-            }).ToListAsync());
+        View((await _context.Departments.Include(d => d.Branch).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var department = await _context.Departments.Include(d => d.Branch).FirstOrDefaultAsync(m => m.DepartmentId == id);
         if (department == null) return NotFound();
-        return View(new DepartmentViewModel
-        {
-            DepartmentId = department.DepartmentId,
-            DepartmentName = department.DepartmentName,
-            BranchId = department.BranchId,
-            BranchName = department.Branch?.BranchName,
-            Branch = department.Branch
-        });
+        return View(department.ToViewModel());
     }
 
     public IActionResult Create()
@@ -48,8 +35,7 @@ public class DepartmentController : Controller
     {
         if (ModelState.IsValid)
         {
-            var department = new Department { DepartmentName = vm.DepartmentName, BranchId = vm.BranchId };
-            _context.Add(department);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,7 +50,7 @@ public class DepartmentController : Controller
         if (department == null) return NotFound();
 
         ViewBag.BranchId = new SelectList(_context.Branches, "BranchId", "BranchName", department.BranchId);
-        return View(new DepartmentViewModel { DepartmentId = department.DepartmentId, DepartmentName = department.DepartmentName, BranchId = department.BranchId });
+        return View(department.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -98,14 +84,7 @@ public class DepartmentController : Controller
         if (id == null) return NotFound();
         var department = await _context.Departments.Include(d => d.Branch).FirstOrDefaultAsync(m => m.DepartmentId == id);
         if (department == null) return NotFound();
-        return View(new DepartmentViewModel
-        {
-            DepartmentId = department.DepartmentId,
-            DepartmentName = department.DepartmentName,
-            BranchId = department.BranchId,
-            BranchName = department.Branch?.BranchName,
-            Branch = department.Branch
-        });
+        return View(department.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]

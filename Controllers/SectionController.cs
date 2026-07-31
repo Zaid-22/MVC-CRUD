@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MvcCrudProject.Data;
+using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
 using MvcCrudProject.ViewModels;
 
@@ -12,29 +14,14 @@ public class SectionController : Controller
     public SectionController(AppDbContext context) => _context = context;
 
     public async Task<IActionResult> Index() =>
-        View(await _context.Sections
-            .Select(s => new SectionViewModel
-            {
-                SectionId = s.SectionId,
-                SectionName = s.SectionName,
-                DepartmentId = s.DepartmentId,
-                DepartmentName = s.Department.DepartmentName,
-                Department = s.Department
-            }).ToListAsync());
+        View((await _context.Sections.Include(s => s.Department).ToListAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
         var section = await _context.Sections.Include(s => s.Department).FirstOrDefaultAsync(m => m.SectionId == id);
         if (section == null) return NotFound();
-        return View(new SectionViewModel
-        {
-            SectionId = section.SectionId,
-            SectionName = section.SectionName,
-            DepartmentId = section.DepartmentId,
-            DepartmentName = section.Department?.DepartmentName,
-            Department = section.Department
-        });
+        return View(section.ToViewModel());
     }
 
     public IActionResult Create()
@@ -48,8 +35,7 @@ public class SectionController : Controller
     {
         if (ModelState.IsValid)
         {
-            var section = new Section { SectionName = vm.SectionName, DepartmentId = vm.DepartmentId };
-            _context.Add(section);
+            _context.Add(vm.ToModel());
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -64,7 +50,7 @@ public class SectionController : Controller
         if (section == null) return NotFound();
 
         ViewBag.DepartmentId = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", section.DepartmentId);
-        return View(new SectionViewModel { SectionId = section.SectionId, SectionName = section.SectionName, DepartmentId = section.DepartmentId });
+        return View(section.ToViewModel());
     }
 
     [HttpPost, ValidateAntiForgeryToken]
@@ -98,14 +84,7 @@ public class SectionController : Controller
         if (id == null) return NotFound();
         var section = await _context.Sections.Include(s => s.Department).FirstOrDefaultAsync(m => m.SectionId == id);
         if (section == null) return NotFound();
-        return View(new SectionViewModel
-        {
-            SectionId = section.SectionId,
-            SectionName = section.SectionName,
-            DepartmentId = section.DepartmentId,
-            DepartmentName = section.Department?.DepartmentName,
-            Department = section.Department
-        });
+        return View(section.ToViewModel());
     }
 
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
