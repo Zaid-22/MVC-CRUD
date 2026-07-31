@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class PlanetController : Controller
 {
-    private readonly AppDbContext _context;
-    public PlanetController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Planet> _planetRepo;
+    private readonly IGenericRepository<Galaxy> _galaxyRepo;
+
+    public PlanetController(IGenericRepository<Planet> planetRepo, IGenericRepository<Galaxy> galaxyRepo)
+    {
+        _planetRepo = planetRepo;
+        _galaxyRepo = galaxyRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Planets.Include(p => p.Galaxy).ToListAsync()).ToViewModelList());
+        View((await _planetRepo.GetAllAsync(p => p.Galaxy)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var planet = await _context.Planets.Include(p => p.Galaxy).FirstOrDefaultAsync(m => m.PlanetId == id);
+        var planet = await _planetRepo.GetFirstOrDefaultAsync(m => m.PlanetId == id, p => p.Galaxy);
         if (planet == null) return NotFound();
         return View(planet.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.GalaxyId = new SelectList(_context.Galaxies, "GalaxyId", "GalaxyName");
+        ViewBag.GalaxyId = new SelectList(await _galaxyRepo.GetAllAsync(), "GalaxyId", "GalaxyName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class PlanetController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _planetRepo.AddAsync(vm.ToModel());
+            await _planetRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.GalaxyId = new SelectList(_context.Galaxies, "GalaxyId", "GalaxyName", vm.GalaxyId);
+        ViewBag.GalaxyId = new SelectList(await _galaxyRepo.GetAllAsync(), "GalaxyId", "GalaxyName", vm.GalaxyId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var planet = await _context.Planets.FindAsync(id);
+        var planet = await _planetRepo.GetByIdAsync(id.Value);
         if (planet == null) return NotFound();
 
-        ViewBag.GalaxyId = new SelectList(_context.Galaxies, "GalaxyId", "GalaxyName", planet.GalaxyId);
+        ViewBag.GalaxyId = new SelectList(await _galaxyRepo.GetAllAsync(), "GalaxyId", "GalaxyName", planet.GalaxyId);
         return View(planet.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class PlanetController : Controller
         {
             try
             {
-                var planet = await _context.Planets.FindAsync(id);
+                var planet = await _planetRepo.GetByIdAsync(id);
                 if (planet == null) return NotFound();
                 planet.PlanetName = vm.PlanetName;
                 planet.GalaxyId = vm.GalaxyId;
-                _context.Update(planet);
-                await _context.SaveChangesAsync();
+                _planetRepo.Update(planet);
+                await _planetRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Planets.Any(e => e.PlanetId == id)) return NotFound();
+                if (!await _planetRepo.ExistsAsync(e => e.PlanetId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.GalaxyId = new SelectList(_context.Galaxies, "GalaxyId", "GalaxyName", vm.GalaxyId);
+        ViewBag.GalaxyId = new SelectList(await _galaxyRepo.GetAllAsync(), "GalaxyId", "GalaxyName", vm.GalaxyId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var planet = await _context.Planets.Include(p => p.Galaxy).FirstOrDefaultAsync(m => m.PlanetId == id);
+        var planet = await _planetRepo.GetFirstOrDefaultAsync(m => m.PlanetId == id, p => p.Galaxy);
         if (planet == null) return NotFound();
         return View(planet.ToViewModel());
     }
@@ -92,9 +98,9 @@ public class PlanetController : Controller
     {
         try
         {
-            var planet = await _context.Planets.FindAsync(id);
-            if (planet != null) _context.Planets.Remove(planet);
-            await _context.SaveChangesAsync();
+            var planet = await _planetRepo.GetByIdAsync(id);
+            if (planet != null) _planetRepo.Remove(planet);
+            await _planetRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

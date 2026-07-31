@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class CountryController : Controller
 {
-    private readonly AppDbContext _context;
-    public CountryController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Country> _countryRepo;
+    private readonly IGenericRepository<Region> _regionRepo;
+
+    public CountryController(IGenericRepository<Country> countryRepo, IGenericRepository<Region> regionRepo)
+    {
+        _countryRepo = countryRepo;
+        _regionRepo = regionRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Countries.Include(c => c.Region).ToListAsync()).ToViewModelList());
+        View((await _countryRepo.GetAllAsync(c => c.Region)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var country = await _context.Countries.Include(c => c.Region).FirstOrDefaultAsync(m => m.CountryId == id);
+        var country = await _countryRepo.GetFirstOrDefaultAsync(m => m.CountryId == id, c => c.Region);
         if (country == null) return NotFound();
         return View(country.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.RegionId = new SelectList(_context.Regions, "RegionId", "RegionName");
+        ViewBag.RegionId = new SelectList(await _regionRepo.GetAllAsync(), "RegionId", "RegionName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class CountryController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _countryRepo.AddAsync(vm.ToModel());
+            await _countryRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.RegionId = new SelectList(_context.Regions, "RegionId", "RegionName", vm.RegionId);
+        ViewBag.RegionId = new SelectList(await _regionRepo.GetAllAsync(), "RegionId", "RegionName", vm.RegionId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var country = await _context.Countries.FindAsync(id);
+        var country = await _countryRepo.GetByIdAsync(id.Value);
         if (country == null) return NotFound();
 
-        ViewBag.RegionId = new SelectList(_context.Regions, "RegionId", "RegionName", country.RegionId);
+        ViewBag.RegionId = new SelectList(await _regionRepo.GetAllAsync(), "RegionId", "RegionName", country.RegionId);
         return View(country.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class CountryController : Controller
         {
             try
             {
-                var country = await _context.Countries.FindAsync(id);
+                var country = await _countryRepo.GetByIdAsync(id);
                 if (country == null) return NotFound();
                 country.CountryName = vm.CountryName;
                 country.RegionId = vm.RegionId;
-                _context.Update(country);
-                await _context.SaveChangesAsync();
+                _countryRepo.Update(country);
+                await _countryRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Countries.Any(e => e.CountryId == id)) return NotFound();
+                if (!await _countryRepo.ExistsAsync(e => e.CountryId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.RegionId = new SelectList(_context.Regions, "RegionId", "RegionName", vm.RegionId);
+        ViewBag.RegionId = new SelectList(await _regionRepo.GetAllAsync(), "RegionId", "RegionName", vm.RegionId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var country = await _context.Countries.Include(c => c.Region).FirstOrDefaultAsync(m => m.CountryId == id);
+        var country = await _countryRepo.GetFirstOrDefaultAsync(m => m.CountryId == id, c => c.Region);
         if (country == null) return NotFound();
         return View(country.ToViewModel());
     }
@@ -92,9 +98,9 @@ public class CountryController : Controller
     {
         try
         {
-            var country = await _context.Countries.FindAsync(id);
-            if (country != null) _context.Countries.Remove(country);
-            await _context.SaveChangesAsync();
+            var country = await _countryRepo.GetByIdAsync(id);
+            if (country != null) _countryRepo.Remove(country);
+            await _countryRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

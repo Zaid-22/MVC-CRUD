@@ -1,24 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class GalaxyController : Controller
 {
-    private readonly AppDbContext _context;
-    public GalaxyController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Galaxy> _galaxyRepo;
+
+    public GalaxyController(IGenericRepository<Galaxy> galaxyRepo)
+    {
+        _galaxyRepo = galaxyRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Galaxies.ToListAsync()).ToViewModelList());
+        View((await _galaxyRepo.GetAllAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var galaxy = await _context.Galaxies.FirstOrDefaultAsync(m => m.GalaxyId == id);
+        var galaxy = await _galaxyRepo.GetFirstOrDefaultAsync(m => m.GalaxyId == id);
         if (galaxy == null) return NotFound();
         return View(galaxy.ToViewModel());
     }
@@ -30,8 +34,8 @@ public class GalaxyController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _galaxyRepo.AddAsync(vm.ToModel());
+            await _galaxyRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
         return View(vm);
@@ -40,7 +44,7 @@ public class GalaxyController : Controller
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var galaxy = await _context.Galaxies.FindAsync(id);
+        var galaxy = await _galaxyRepo.GetByIdAsync(id.Value);
         if (galaxy == null) return NotFound();
         return View(galaxy.ToViewModel());
     }
@@ -53,15 +57,15 @@ public class GalaxyController : Controller
         {
             try
             {
-                var galaxy = await _context.Galaxies.FindAsync(id);
+                var galaxy = await _galaxyRepo.GetByIdAsync(id);
                 if (galaxy == null) return NotFound();
                 galaxy.GalaxyName = vm.GalaxyName;
-                _context.Update(galaxy);
-                await _context.SaveChangesAsync();
+                _galaxyRepo.Update(galaxy);
+                await _galaxyRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Galaxies.Any(e => e.GalaxyId == id)) return NotFound();
+                if (!await _galaxyRepo.ExistsAsync(e => e.GalaxyId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
@@ -72,7 +76,7 @@ public class GalaxyController : Controller
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var galaxy = await _context.Galaxies.FirstOrDefaultAsync(m => m.GalaxyId == id);
+        var galaxy = await _galaxyRepo.GetFirstOrDefaultAsync(m => m.GalaxyId == id);
         if (galaxy == null) return NotFound();
         return View(galaxy.ToViewModel());
     }
@@ -82,9 +86,9 @@ public class GalaxyController : Controller
     {
         try
         {
-            var galaxy = await _context.Galaxies.FindAsync(id);
-            if (galaxy != null) _context.Galaxies.Remove(galaxy);
-            await _context.SaveChangesAsync();
+            var galaxy = await _galaxyRepo.GetByIdAsync(id);
+            if (galaxy != null) _galaxyRepo.Remove(galaxy);
+            await _galaxyRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

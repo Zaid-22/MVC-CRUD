@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class ContinentController : Controller
 {
-    private readonly AppDbContext _context;
-    public ContinentController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Continent> _continentRepo;
+    private readonly IGenericRepository<Planet> _planetRepo;
+
+    public ContinentController(IGenericRepository<Continent> continentRepo, IGenericRepository<Planet> planetRepo)
+    {
+        _continentRepo = continentRepo;
+        _planetRepo = planetRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Continents.Include(c => c.Planet).ToListAsync()).ToViewModelList());
+        View((await _continentRepo.GetAllAsync(c => c.Planet)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var continent = await _context.Continents.Include(c => c.Planet).FirstOrDefaultAsync(m => m.ContinentId == id);
+        var continent = await _continentRepo.GetFirstOrDefaultAsync(m => m.ContinentId == id, c => c.Planet);
         if (continent == null) return NotFound();
         return View(continent.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.PlanetId = new SelectList(_context.Planets, "PlanetId", "PlanetName");
+        ViewBag.PlanetId = new SelectList(await _planetRepo.GetAllAsync(), "PlanetId", "PlanetName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class ContinentController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _continentRepo.AddAsync(vm.ToModel());
+            await _continentRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.PlanetId = new SelectList(_context.Planets, "PlanetId", "PlanetName", vm.PlanetId);
+        ViewBag.PlanetId = new SelectList(await _planetRepo.GetAllAsync(), "PlanetId", "PlanetName", vm.PlanetId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var continent = await _context.Continents.FindAsync(id);
+        var continent = await _continentRepo.GetByIdAsync(id.Value);
         if (continent == null) return NotFound();
 
-        ViewBag.PlanetId = new SelectList(_context.Planets, "PlanetId", "PlanetName", continent.PlanetId);
+        ViewBag.PlanetId = new SelectList(await _planetRepo.GetAllAsync(), "PlanetId", "PlanetName", continent.PlanetId);
         return View(continent.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class ContinentController : Controller
         {
             try
             {
-                var continent = await _context.Continents.FindAsync(id);
+                var continent = await _continentRepo.GetByIdAsync(id);
                 if (continent == null) return NotFound();
                 continent.ContinentName = vm.ContinentName;
                 continent.PlanetId = vm.PlanetId;
-                _context.Update(continent);
-                await _context.SaveChangesAsync();
+                _continentRepo.Update(continent);
+                await _continentRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Continents.Any(e => e.ContinentId == id)) return NotFound();
+                if (!await _continentRepo.ExistsAsync(e => e.ContinentId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.PlanetId = new SelectList(_context.Planets, "PlanetId", "PlanetName", vm.PlanetId);
+        ViewBag.PlanetId = new SelectList(await _planetRepo.GetAllAsync(), "PlanetId", "PlanetName", vm.PlanetId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var continent = await _context.Continents.Include(c => c.Planet).FirstOrDefaultAsync(m => m.ContinentId == id);
+        var continent = await _continentRepo.GetFirstOrDefaultAsync(m => m.ContinentId == id, c => c.Planet);
         if (continent == null) return NotFound();
         return View(continent.ToViewModel());
     }
@@ -92,9 +98,9 @@ public class ContinentController : Controller
     {
         try
         {
-            var continent = await _context.Continents.FindAsync(id);
-            if (continent != null) _context.Continents.Remove(continent);
-            await _context.SaveChangesAsync();
+            var continent = await _continentRepo.GetByIdAsync(id);
+            if (continent != null) _continentRepo.Remove(continent);
+            await _continentRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

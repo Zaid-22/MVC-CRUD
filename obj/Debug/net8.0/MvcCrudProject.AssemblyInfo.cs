@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MvcCrudProject")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a541872fd3a5c3d62051445af6df8922a22ace7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e84cc92b74a7ef9acdba05350ff3a8e0a751fe40")]
 [assembly: System.Reflection.AssemblyProductAttribute("MvcCrudProject")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MvcCrudProject")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

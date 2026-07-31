@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class CityController : Controller
 {
-    private readonly AppDbContext _context;
-    public CityController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<City> _cityRepo;
+    private readonly IGenericRepository<Country> _countryRepo;
+
+    public CityController(IGenericRepository<City> cityRepo, IGenericRepository<Country> countryRepo)
+    {
+        _cityRepo = cityRepo;
+        _countryRepo = countryRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Cities.Include(c => c.Country).ToListAsync()).ToViewModelList());
+        View((await _cityRepo.GetAllAsync(c => c.Country)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var city = await _context.Cities.Include(c => c.Country).FirstOrDefaultAsync(m => m.CityId == id);
+        var city = await _cityRepo.GetFirstOrDefaultAsync(m => m.CityId == id, c => c.Country);
         if (city == null) return NotFound();
         return View(city.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.CountryId = new SelectList(_context.Countries, "CountryId", "CountryName");
+        ViewBag.CountryId = new SelectList(await _countryRepo.GetAllAsync(), "CountryId", "CountryName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class CityController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _cityRepo.AddAsync(vm.ToModel());
+            await _cityRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.CountryId = new SelectList(_context.Countries, "CountryId", "CountryName", vm.CountryId);
+        ViewBag.CountryId = new SelectList(await _countryRepo.GetAllAsync(), "CountryId", "CountryName", vm.CountryId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var city = await _context.Cities.FindAsync(id);
+        var city = await _cityRepo.GetByIdAsync(id.Value);
         if (city == null) return NotFound();
 
-        ViewBag.CountryId = new SelectList(_context.Countries, "CountryId", "CountryName", city.CountryId);
+        ViewBag.CountryId = new SelectList(await _countryRepo.GetAllAsync(), "CountryId", "CountryName", city.CountryId);
         return View(city.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class CityController : Controller
         {
             try
             {
-                var city = await _context.Cities.FindAsync(id);
+                var city = await _cityRepo.GetByIdAsync(id);
                 if (city == null) return NotFound();
                 city.CityName = vm.CityName;
                 city.CountryId = vm.CountryId;
-                _context.Update(city);
-                await _context.SaveChangesAsync();
+                _cityRepo.Update(city);
+                await _cityRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Cities.Any(e => e.CityId == id)) return NotFound();
+                if (!await _cityRepo.ExistsAsync(e => e.CityId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.CountryId = new SelectList(_context.Countries, "CountryId", "CountryName", vm.CountryId);
+        ViewBag.CountryId = new SelectList(await _countryRepo.GetAllAsync(), "CountryId", "CountryName", vm.CountryId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var city = await _context.Cities.Include(c => c.Country).FirstOrDefaultAsync(m => m.CityId == id);
+        var city = await _cityRepo.GetFirstOrDefaultAsync(m => m.CityId == id, c => c.Country);
         if (city == null) return NotFound();
         return View(city.ToViewModel());
     }
@@ -92,9 +98,9 @@ public class CityController : Controller
     {
         try
         {
-            var city = await _context.Cities.FindAsync(id);
-            if (city != null) _context.Cities.Remove(city);
-            await _context.SaveChangesAsync();
+            var city = await _cityRepo.GetByIdAsync(id);
+            if (city != null) _cityRepo.Remove(city);
+            await _cityRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

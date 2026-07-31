@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class SectionController : Controller
 {
-    private readonly AppDbContext _context;
-    public SectionController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Section> _sectionRepo;
+    private readonly IGenericRepository<Department> _departmentRepo;
+
+    public SectionController(IGenericRepository<Section> sectionRepo, IGenericRepository<Department> departmentRepo)
+    {
+        _sectionRepo = sectionRepo;
+        _departmentRepo = departmentRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Sections.Include(s => s.Department).ToListAsync()).ToViewModelList());
+        View((await _sectionRepo.GetAllAsync(s => s.Department)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var section = await _context.Sections.Include(s => s.Department).FirstOrDefaultAsync(m => m.SectionId == id);
+        var section = await _sectionRepo.GetFirstOrDefaultAsync(m => m.SectionId == id, s => s.Department);
         if (section == null) return NotFound();
         return View(section.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.DepartmentId = new SelectList(_context.Departments, "DepartmentId", "DepartmentName");
+        ViewBag.DepartmentId = new SelectList(await _departmentRepo.GetAllAsync(), "DepartmentId", "DepartmentName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class SectionController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _sectionRepo.AddAsync(vm.ToModel());
+            await _sectionRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.DepartmentId = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", vm.DepartmentId);
+        ViewBag.DepartmentId = new SelectList(await _departmentRepo.GetAllAsync(), "DepartmentId", "DepartmentName", vm.DepartmentId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var section = await _context.Sections.FindAsync(id);
+        var section = await _sectionRepo.GetByIdAsync(id.Value);
         if (section == null) return NotFound();
 
-        ViewBag.DepartmentId = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", section.DepartmentId);
+        ViewBag.DepartmentId = new SelectList(await _departmentRepo.GetAllAsync(), "DepartmentId", "DepartmentName", section.DepartmentId);
         return View(section.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class SectionController : Controller
         {
             try
             {
-                var section = await _context.Sections.FindAsync(id);
+                var section = await _sectionRepo.GetByIdAsync(id);
                 if (section == null) return NotFound();
                 section.SectionName = vm.SectionName;
                 section.DepartmentId = vm.DepartmentId;
-                _context.Update(section);
-                await _context.SaveChangesAsync();
+                _sectionRepo.Update(section);
+                await _sectionRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Sections.Any(e => e.SectionId == id)) return NotFound();
+                if (!await _sectionRepo.ExistsAsync(e => e.SectionId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.DepartmentId = new SelectList(_context.Departments, "DepartmentId", "DepartmentName", vm.DepartmentId);
+        ViewBag.DepartmentId = new SelectList(await _departmentRepo.GetAllAsync(), "DepartmentId", "DepartmentName", vm.DepartmentId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var section = await _context.Sections.Include(s => s.Department).FirstOrDefaultAsync(m => m.SectionId == id);
+        var section = await _sectionRepo.GetFirstOrDefaultAsync(m => m.SectionId == id, s => s.Department);
         if (section == null) return NotFound();
         return View(section.ToViewModel());
     }
@@ -92,9 +98,9 @@ public class SectionController : Controller
     {
         try
         {
-            var section = await _context.Sections.FindAsync(id);
-            if (section != null) _context.Sections.Remove(section);
-            await _context.SaveChangesAsync();
+            var section = await _sectionRepo.GetByIdAsync(id);
+            if (section != null) _sectionRepo.Remove(section);
+            await _sectionRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

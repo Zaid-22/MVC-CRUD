@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class EmployeeController : Controller
 {
-    private readonly AppDbContext _context;
-    public EmployeeController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Employee> _employeeRepo;
+    private readonly IGenericRepository<Section> _sectionRepo;
+
+    public EmployeeController(IGenericRepository<Employee> employeeRepo, IGenericRepository<Section> sectionRepo)
+    {
+        _employeeRepo = employeeRepo;
+        _sectionRepo = sectionRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Employees.Include(e => e.Section).ToListAsync()).ToViewModelList());
+        View((await _employeeRepo.GetAllAsync(e => e.Section)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var employee = await _context.Employees.Include(e => e.Section).FirstOrDefaultAsync(m => m.EmployeeId == id);
+        var employee = await _employeeRepo.GetFirstOrDefaultAsync(m => m.EmployeeId == id, e => e.Section);
         if (employee == null) return NotFound();
         return View(employee.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.SectionId = new SelectList(_context.Sections, "SectionId", "SectionName");
+        ViewBag.SectionId = new SelectList(await _sectionRepo.GetAllAsync(), "SectionId", "SectionName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class EmployeeController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _employeeRepo.AddAsync(vm.ToModel());
+            await _employeeRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.SectionId = new SelectList(_context.Sections, "SectionId", "SectionName", vm.SectionId);
+        ViewBag.SectionId = new SelectList(await _sectionRepo.GetAllAsync(), "SectionId", "SectionName", vm.SectionId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var employee = await _context.Employees.FindAsync(id);
+        var employee = await _employeeRepo.GetByIdAsync(id.Value);
         if (employee == null) return NotFound();
 
-        ViewBag.SectionId = new SelectList(_context.Sections, "SectionId", "SectionName", employee.SectionId);
+        ViewBag.SectionId = new SelectList(await _sectionRepo.GetAllAsync(), "SectionId", "SectionName", employee.SectionId);
         return View(employee.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class EmployeeController : Controller
         {
             try
             {
-                var employee = await _context.Employees.FindAsync(id);
+                var employee = await _employeeRepo.GetByIdAsync(id);
                 if (employee == null) return NotFound();
                 employee.EmployeeName = vm.EmployeeName;
                 employee.SectionId = vm.SectionId;
-                _context.Update(employee);
-                await _context.SaveChangesAsync();
+                _employeeRepo.Update(employee);
+                await _employeeRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Employees.Any(e => e.EmployeeId == id)) return NotFound();
+                if (!await _employeeRepo.ExistsAsync(e => e.EmployeeId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.SectionId = new SelectList(_context.Sections, "SectionId", "SectionName", vm.SectionId);
+        ViewBag.SectionId = new SelectList(await _sectionRepo.GetAllAsync(), "SectionId", "SectionName", vm.SectionId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var employee = await _context.Employees.Include(e => e.Section).FirstOrDefaultAsync(m => m.EmployeeId == id);
+        var employee = await _employeeRepo.GetFirstOrDefaultAsync(m => m.EmployeeId == id, e => e.Section);
         if (employee == null) return NotFound();
         return View(employee.ToViewModel());
     }
@@ -90,9 +96,9 @@ public class EmployeeController : Controller
     [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var employee = await _context.Employees.FindAsync(id);
-        if (employee != null) _context.Employees.Remove(employee);
-        await _context.SaveChangesAsync();
+        var employee = await _employeeRepo.GetByIdAsync(id);
+        if (employee != null) _employeeRepo.Remove(employee);
+        await _employeeRepo.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 }

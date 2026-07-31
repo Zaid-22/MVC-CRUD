@@ -1,24 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class CompanyController : Controller
 {
-    private readonly AppDbContext _context;
-    public CompanyController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Company> _companyRepo;
+
+    public CompanyController(IGenericRepository<Company> companyRepo)
+    {
+        _companyRepo = companyRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Companies.ToListAsync()).ToViewModelList());
+        View((await _companyRepo.GetAllAsync()).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var company = await _context.Companies.FirstOrDefaultAsync(m => m.CompanyId == id);
+        var company = await _companyRepo.GetFirstOrDefaultAsync(m => m.CompanyId == id);
         if (company == null) return NotFound();
         return View(company.ToViewModel());
     }
@@ -31,8 +35,8 @@ public class CompanyController : Controller
         if (ModelState.IsValid)
         {
             var company = vm.ToModel();
-            _context.Add(company);
-            await _context.SaveChangesAsync();
+            await _companyRepo.AddAsync(company);
+            await _companyRepo.SaveChangesAsync();
             return RedirectToAction("Create", "Branch", new { companyId = company.CompanyId });
         }
         return View(vm);
@@ -41,7 +45,7 @@ public class CompanyController : Controller
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var company = await _context.Companies.FindAsync(id);
+        var company = await _companyRepo.GetByIdAsync(id.Value);
         if (company == null) return NotFound();
         return View(company.ToViewModel());
     }
@@ -54,15 +58,15 @@ public class CompanyController : Controller
         {
             try
             {
-                var company = await _context.Companies.FindAsync(id);
+                var company = await _companyRepo.GetByIdAsync(id);
                 if (company == null) return NotFound();
                 company.CompanyName = vm.CompanyName;
-                _context.Update(company);
-                await _context.SaveChangesAsync();
+                _companyRepo.Update(company);
+                await _companyRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Companies.Any(e => e.CompanyId == id)) return NotFound();
+                if (!await _companyRepo.ExistsAsync(e => e.CompanyId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
@@ -73,7 +77,7 @@ public class CompanyController : Controller
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var company = await _context.Companies.FirstOrDefaultAsync(m => m.CompanyId == id);
+        var company = await _companyRepo.GetFirstOrDefaultAsync(m => m.CompanyId == id);
         if (company == null) return NotFound();
         return View(company.ToViewModel());
     }
@@ -83,9 +87,9 @@ public class CompanyController : Controller
     {
         try
         {
-            var company = await _context.Companies.FindAsync(id);
-            if (company != null) _context.Companies.Remove(company);
-            await _context.SaveChangesAsync();
+            var company = await _companyRepo.GetByIdAsync(id);
+            if (company != null) _companyRepo.Remove(company);
+            await _companyRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {

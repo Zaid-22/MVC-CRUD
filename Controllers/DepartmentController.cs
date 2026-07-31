@@ -1,32 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MvcCrudProject.Data;
 using MvcCrudProject.Extensions;
 using MvcCrudProject.Models;
+using MvcCrudProject.Repositories;
 using MvcCrudProject.ViewModels;
 
 namespace MvcCrudProject.Controllers;
 
 public class DepartmentController : Controller
 {
-    private readonly AppDbContext _context;
-    public DepartmentController(AppDbContext context) => _context = context;
+    private readonly IGenericRepository<Department> _departmentRepo;
+    private readonly IGenericRepository<Branch> _branchRepo;
+
+    public DepartmentController(IGenericRepository<Department> departmentRepo, IGenericRepository<Branch> branchRepo)
+    {
+        _departmentRepo = departmentRepo;
+        _branchRepo = branchRepo;
+    }
 
     public async Task<IActionResult> Index() =>
-        View((await _context.Departments.Include(d => d.Branch).ToListAsync()).ToViewModelList());
+        View((await _departmentRepo.GetAllAsync(d => d.Branch)).ToViewModelList());
 
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var department = await _context.Departments.Include(d => d.Branch).FirstOrDefaultAsync(m => m.DepartmentId == id);
+        var department = await _departmentRepo.GetFirstOrDefaultAsync(m => m.DepartmentId == id, d => d.Branch);
         if (department == null) return NotFound();
         return View(department.ToViewModel());
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.BranchId = new SelectList(_context.Branches, "BranchId", "BranchName");
+        ViewBag.BranchId = new SelectList(await _branchRepo.GetAllAsync(), "BranchId", "BranchName");
         return View();
     }
 
@@ -35,21 +41,21 @@ public class DepartmentController : Controller
     {
         if (ModelState.IsValid)
         {
-            _context.Add(vm.ToModel());
-            await _context.SaveChangesAsync();
+            await _departmentRepo.AddAsync(vm.ToModel());
+            await _departmentRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.BranchId = new SelectList(_context.Branches, "BranchId", "BranchName", vm.BranchId);
+        ViewBag.BranchId = new SelectList(await _branchRepo.GetAllAsync(), "BranchId", "BranchName", vm.BranchId);
         return View(vm);
     }
 
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var department = await _context.Departments.FindAsync(id);
+        var department = await _departmentRepo.GetByIdAsync(id.Value);
         if (department == null) return NotFound();
 
-        ViewBag.BranchId = new SelectList(_context.Branches, "BranchId", "BranchName", department.BranchId);
+        ViewBag.BranchId = new SelectList(await _branchRepo.GetAllAsync(), "BranchId", "BranchName", department.BranchId);
         return View(department.ToViewModel());
     }
 
@@ -61,28 +67,28 @@ public class DepartmentController : Controller
         {
             try
             {
-                var department = await _context.Departments.FindAsync(id);
+                var department = await _departmentRepo.GetByIdAsync(id);
                 if (department == null) return NotFound();
                 department.DepartmentName = vm.DepartmentName;
                 department.BranchId = vm.BranchId;
-                _context.Update(department);
-                await _context.SaveChangesAsync();
+                _departmentRepo.Update(department);
+                await _departmentRepo.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Departments.Any(e => e.DepartmentId == id)) return NotFound();
+                if (!await _departmentRepo.ExistsAsync(e => e.DepartmentId == id)) return NotFound();
                 throw;
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewBag.BranchId = new SelectList(_context.Branches, "BranchId", "BranchName", vm.BranchId);
+        ViewBag.BranchId = new SelectList(await _branchRepo.GetAllAsync(), "BranchId", "BranchName", vm.BranchId);
         return View(vm);
     }
 
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var department = await _context.Departments.Include(d => d.Branch).FirstOrDefaultAsync(m => m.DepartmentId == id);
+        var department = await _departmentRepo.GetFirstOrDefaultAsync(m => m.DepartmentId == id, d => d.Branch);
         if (department == null) return NotFound();
         return View(department.ToViewModel());
     }
@@ -92,9 +98,9 @@ public class DepartmentController : Controller
     {
         try
         {
-            var department = await _context.Departments.FindAsync(id);
-            if (department != null) _context.Departments.Remove(department);
-            await _context.SaveChangesAsync();
+            var department = await _departmentRepo.GetByIdAsync(id);
+            if (department != null) _departmentRepo.Remove(department);
+            await _departmentRepo.SaveChangesAsync();
         }
         catch (DbUpdateException)
         {
