@@ -33,7 +33,7 @@ public class CompanyController : Controller
             var company = new Company { CompanyName = vm.CompanyName };
             _context.Add(company);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Create", "Branch", new { companyId = company.CompanyId });
         }
         return View(vm);
     }

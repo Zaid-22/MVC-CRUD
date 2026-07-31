@@ -137,3 +137,4 @@
 /Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/obj/Debug/net8.0/MvcCrudProject.pdb
 /Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/obj/Debug/net8.0/MvcCrudProject.genruntimeconfig.cache
 /Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/obj/Debug/net8.0/ref/MvcCrudProject.dll
+/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/obj/Debug/net8.0/MvcCrudProject.sourcelink.json

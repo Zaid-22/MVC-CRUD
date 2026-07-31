@@ -43,11 +43,11 @@ public class BranchController : Controller
         });
     }
 
-    public IActionResult Create()
+    public IActionResult Create(int? companyId)
     {
         ViewBag.AreaId = new SelectList(_context.Areas, "AreaId", "AreaName");
-        ViewBag.CompanyId = new SelectList(_context.Companies, "CompanyId", "CompanyName");
-        return View();
+        ViewBag.CompanyId = new SelectList(_context.Companies, "CompanyId", "CompanyName", companyId);
+        return View(new BranchViewModel { CompanyId = companyId ?? 0 });
     }
 
     [HttpPost, ValidateAntiForgeryToken]
