@@ -1,0 +1,117 @@
+<ul class="nav-main">
+    <li class="nav-main-item">
+        <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+           asp-controller="Home" asp-action="Index">
+            <i class="nav-main-link-icon si si-speedometer"></i>
+            <span class="nav-main-link-name">Dashboard</span>
+        </a>
+    </li>
+
+    <!-- Geographic Hierarchy -->
+    <li class="nav-main-heading">Geographic</li>
+    <li class="nav-main-item">
+        <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+           aria-haspopup="true" aria-expanded="false" href="#">
+            <i class="nav-main-link-icon fa fa-globe"></i>
+            <span class="nav-main-link-name">Locations</span>
+        </a>
+        <ul class="nav-main-submenu">
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Galaxy" ? "active" : "")"
+                   asp-controller="Galaxy" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-star"></i>
+                    <span class="nav-main-link-name">Galaxies</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Planet" ? "active" : "")"
+                   asp-controller="Planet" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-circle"></i>
+                    <span class="nav-main-link-name">Planets</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Continent" ? "active" : "")"
+                   asp-controller="Continent" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-map"></i>
+                    <span class="nav-main-link-name">Continents</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Region" ? "active" : "")"
+                   asp-controller="Region" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-map-marked-alt"></i>
+                    <span class="nav-main-link-name">Regions</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Country" ? "active" : "")"
+                   asp-controller="Country" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-flag"></i>
+                    <span class="nav-main-link-name">Countries</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "City" ? "active" : "")"
+                   asp-controller="City" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-city"></i>
+                    <span class="nav-main-link-name">Cities</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Area" ? "active" : "")"
+                   asp-controller="Area" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-map-pin"></i>
+                    <span class="nav-main-link-name">Areas</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <!-- Organization Hierarchy -->
+    <li class="nav-main-heading">Organization</li>
+    <li class="nav-main-item">
+        <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu"
+           aria-haspopup="true" aria-expanded="false" href="#">
+            <i class="nav-main-link-icon fa fa-building"></i>
+            <span class="nav-main-link-name">Structure</span>
+        </a>
+        <ul class="nav-main-submenu">
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Company" ? "active" : "")"
+                   asp-controller="Company" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-building"></i>
+                    <span class="nav-main-link-name">Companies</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Branch" ? "active" : "")"
+                   asp-controller="Branch" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-code-branch"></i>
+                    <span class="nav-main-link-name">Branches</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Department" ? "active" : "")"
+                   asp-controller="Department" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-sitemap"></i>
+                    <span class="nav-main-link-name">Departments</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Section" ? "active" : "")"
+                   asp-controller="Section" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-layer-group"></i>
+                    <span class="nav-main-link-name">Sections</span>
+                </a>
+            </li>
+            <li class="nav-main-item">
+                <a class="nav-main-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employee" ? "active" : "")"
+                   asp-controller="Employee" asp-action="Index">
+                    <i class="nav-main-link-icon fa fa-users"></i>
+                    <span class="nav-main-link-name">Employees</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

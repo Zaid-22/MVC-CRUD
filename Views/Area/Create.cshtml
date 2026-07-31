@@ -1,0 +1,37 @@
+@model MvcCrudProject.ViewModels.AreaViewModel
+@{
+    ViewData["Title"] = "Add Area";
+    ViewData["PageTitle"] = "Add Area";
+    ViewData["PageSubtitle"] = "Create a new area entry";
+}
+<div class="block block-rounded">
+    <div class="block-header block-header-default">
+        <h3 class="block-title">Add Area</h3>
+    </div>
+    <div class="block-content block-content-full">
+        <div class="row">
+            <div class="col-lg-8">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                    <div class="mb-4">
+                        <label asp-for="AreaName" class="form-label">Area Name</label>
+                        <input asp-for="AreaName" class="form-control" placeholder="Enter area name" />
+                        <span asp-validation-for="AreaName" class="text-danger fs-sm"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="CityId" class="form-label">City</label>
+                        <select asp-for="CityId" asp-items="ViewBag.CityId" class="form-select">
+                            <option value="">-- Select City --</option>
+                        </select>
+                        <span asp-validation-for="CityId" class="text-danger fs-sm"></span>
+                    </div>
+                    <div class="mb-4">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save me-1"></i> Save</button>
+                        <a asp-action="Index" class="btn btn-alt-secondary ms-1"><i class="fa fa-arrow-left me-1"></i> Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

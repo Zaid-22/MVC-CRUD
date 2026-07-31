@@ -1,0 +1,24 @@
+@model MvcCrudProject.ViewModels.EmployeeViewModel
+@{
+    ViewData["Title"] = "Employee Details";
+    ViewData["PageTitle"] = "Employee Details";
+    ViewData["PageSubtitle"] = "View employee information";
+}
+<div class="block block-rounded">
+    <div class="block-header block-header-default">
+        <h3 class="block-title">Employee Details</h3>
+    </div>
+    <div class="block-content block-content-full">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Employee ID</dt>
+            <dd class="col-sm-9">@Model.EmployeeId</dd>
+            <dt class="col-sm-3">Employee Name</dt>
+            <dd class="col-sm-9 fw-semibold">@Model.EmployeeName</dd>
+            <dt class="col-sm-3">Section</dt>
+            <dd class="col-sm-9">@Model.SectionName</dd>
+        </dl>
+        <hr class="my-4">
+        <a asp-action="Edit" asp-route-id="@Model.EmployeeId" class="btn btn-alt-warning"><i class="fa fa-pencil-alt me-1"></i> Edit</a>
+        <a asp-action="Index" class="btn btn-alt-secondary ms-1"><i class="fa fa-arrow-left me-1"></i> Back to List</a>
+    </div>
+</div>

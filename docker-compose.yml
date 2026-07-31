@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Password123
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+      - ./init.sql:/init.sql
+
+  web:
+    build:
+      context: ./MvcCrudProject
+      dockerfile: Dockerfile
+    container_name: mvccrud_web
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Server=db,1433;Database=OrganizationDB;User Id=sa;Password=YourStrong@Password123;TrustServerCertificate=True;MultipleActiveResultSets=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  mssql_data:

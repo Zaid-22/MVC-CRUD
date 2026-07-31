@@ -1,0 +1,38 @@
+@model MvcCrudProject.ViewModels.RegionViewModel
+@{
+    ViewData["Title"] = "Edit Region";
+    ViewData["PageTitle"] = "Edit Region";
+    ViewData["PageSubtitle"] = "Update region information";
+}
+<div class="block block-rounded">
+    <div class="block-header block-header-default">
+        <h3 class="block-title">Edit Region</h3>
+    </div>
+    <div class="block-content block-content-full">
+        <div class="row">
+            <div class="col-lg-8">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                    <input type="hidden" asp-for="RegionId" />
+                    <div class="mb-4">
+                        <label asp-for="RegionName" class="form-label">Region Name</label>
+                        <input asp-for="RegionName" class="form-control" />
+                        <span asp-validation-for="RegionName" class="text-danger fs-sm"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="ContinentId" class="form-label">Continent</label>
+                        <select asp-for="ContinentId" asp-items="ViewBag.ContinentId" class="form-select">
+                            <option value="">-- Select Continent --</option>
+                        </select>
+                        <span asp-validation-for="ContinentId" class="text-danger fs-sm"></span>
+                    </div>
+                    <div class="mb-4">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save me-1"></i> Update</button>
+                        <a asp-action="Index" class="btn btn-alt-secondary ms-1"><i class="fa fa-arrow-left me-1"></i> Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

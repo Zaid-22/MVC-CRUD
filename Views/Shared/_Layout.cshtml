@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="remember-theme">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>@ViewData["Title"] - Organization Manager</title>
+
+    <link rel="shortcut icon" href="~/assets/media/favicons/favicon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="~/assets/media/favicons/favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/assets/media/favicons/apple-touch-icon-180x180.png">
+
+    <!-- DataTables CSS (from OneUI template plugins) -->
+    <link rel="stylesheet" href="~/assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="~/assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" href="~/assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css">
+
+    <!-- OneUI framework -->
+    <link rel="stylesheet" id="css-main" href="~/assets/css/oneui.min.css" asp-append-version="true">
+
+    <script src="~/assets/js/setTheme.js"></script>
+</head>
+<body>
+    <!-- Page Container -->
+    <div id="page-container" class="sidebar-o sidebar-dark enable-page-overlay side-scroll page-header-fixed main-content-narrow">
+
+        <!-- Sidebar -->
+        <nav id="sidebar" aria-label="Main Navigation">
+            <!-- Side Header -->
+            <div class="content-header">
+                <a class="fw-semibold text-dual" asp-controller="Home" asp-action="Index">
+                    <span class="smini-visible">
+                        <i class="fa fa-circle-notch text-primary"></i>
+                    </span>
+                    <span class="smini-hide fs-5 tracking-wider">OrgManager</span>
+                </a>
+                <div class="d-flex align-items-center gap-1">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-sm btn-alt-secondary" id="sidebar-dark-mode-dropdown"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="far fa-fw fa-moon" data-dark-mode-icon></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end smini-hide border-0" aria-labelledby="sidebar-dark-mode-dropdown">
+                            <button type="button" class="dropdown-item d-flex align-items-center gap-2"
+                                    data-toggle="layout" data-action="dark_mode_off">
+                                <i class="far fa-sun fa-fw opacity-50"></i>
+                                <span class="fs-sm fw-medium">Light</span>
+                            </button>
+                            <button type="button" class="dropdown-item d-flex align-items-center gap-2"
+                                    data-toggle="layout" data-action="dark_mode_on">
+                                <i class="far fa-moon fa-fw opacity-50"></i>
+                                <span class="fs-sm fw-medium">Dark</span>
+                            </button>
+                            <button type="button" class="dropdown-item d-flex align-items-center gap-2"
+                                    data-toggle="layout" data-action="dark_mode_system">
+                                <i class="fa fa-desktop fa-fw opacity-50"></i>
+                                <span class="fs-sm fw-medium">System</span>
+                            </button>
+                        </div>
+                    </div>
+                    <a class="d-lg-none btn btn-sm btn-alt-secondary ms-1"
+                       data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
+                        <i class="fa fa-fw fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- END Side Header -->
+
+            <!-- Sidebar Scrolling -->
+            <div class="js-sidebar-scroll">
+                <div class="content-side">
+                    <partial name="_SidebarNav" />
+                </div>
+            </div>
+            <!-- END Sidebar Scrolling -->
+        </nav>
+        <!-- END Sidebar -->
+
+        <!-- Header -->
+        <header id="page-header">
+            <div class="content-header">
+                <!-- Left Section -->
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn btn-sm btn-alt-secondary me-2 d-lg-none"
+                            data-toggle="layout" data-action="sidebar_toggle">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-alt-secondary d-sm-none"
+                            data-toggle="layout" data-action="header_search_on">
+                        <i class="si si-magnifier"></i>
+                    </button>
+                    <span class="d-none d-sm-inline-block fw-semibold ms-2">Organization Manager</span>
+                </div>
+                <!-- End Left Section -->
+
+                <!-- Right Section -->
+                <div class="d-flex align-items-center">
+                    <div class="dropdown d-inline-block ms-2">
+                        <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center"
+                                id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-fw fa-user me-1"></i>
+                            <span class="d-none d-sm-inline-block ms-1">Admin</span>
+                            <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block ms-1"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0 border-0"
+                             aria-labelledby="page-header-user-dropdown">
+                            <div class="p-3 text-center bg-body-light border-bottom rounded-top">
+                                <i class="fa fa-user-circle fa-3x text-primary mb-2"></i>
+                                <p class="mt-1 mb-0 fw-medium">Administrator</p>
+                                <p class="mb-0 text-muted fs-sm fw-medium">System Admin</p>
+                            </div>
+                            <div class="p-2">
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                                    <span class="fs-sm fw-medium">Profile</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                                    <span class="fs-sm fw-medium">Settings</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Right Section -->
+            </div>
+        </header>
+        <!-- END Header -->
+
+        <!-- Main Container -->
+        <main id="main-container">
+            <!-- Hero / Page Title Bar -->
+            <div class="bg-body-light">
+                <div class="content content-full">
+                    <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center py-2">
+                        <div class="flex-grow-1">
+                            <h1 class="h3 fw-bold mb-1">@ViewData["PageTitle"]</h1>
+                            <h2 class="fs-base lh-base fw-medium text-muted mb-0">@ViewData["PageSubtitle"]</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Hero -->
+
+            <!-- Page Content -->
+            <div class="content">
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fa fa-exclamation-triangle me-1"></i> @TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa fa-check-circle me-1"></i> @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                @RenderBody()
+            </div>
+            <!-- END Page Content -->
+        </main>
+        <!-- END Main Container -->
+
+        <!-- Footer -->
+        <footer id="page-footer" class="bg-body-light">
+            <div class="content py-3">
+                <div class="row fs-sm">
+                    <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+                        Organization Manager &copy; <span data-toggle="year-copy"></span>
+                    </div>
+                    <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
+                        Powered by <strong>OneUI</strong> &amp; ASP.NET Core MVC
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- END Footer -->
+    </div>
+    <!-- END Page Container -->
+
+    <!-- OneUI core JS -->
+    <script src="~/assets/js/oneui.app.min.js"></script>
+
+    <!-- jQuery (required for DataTables) -->
+    <script src="~/assets/js/lib/jquery.min.js"></script>
+
+    <!-- DataTables plugins (from OneUI template) -->
+    <script src="~/assets/js/plugins/datatables/dataTables.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-bs5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons-jszip/jszip.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons-pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons/buttons.print.min.js"></script>
+    <script src="~/assets/js/plugins/datatables-buttons/buttons.html5.min.js"></script>
+
+    <!-- SweetAlert2 (for delete confirmations) -->
+    <script src="~/assets/js/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

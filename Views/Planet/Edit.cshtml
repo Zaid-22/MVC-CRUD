@@ -1,0 +1,45 @@
+@model MvcCrudProject.ViewModels.PlanetViewModel
+@{
+    ViewData["Title"] = "Edit Planet";
+    ViewData["PageTitle"] = "Edit Planet";
+    ViewData["PageSubtitle"] = "Update planet information";
+}
+
+<div class="block block-rounded">
+    <div class="block-header block-header-default">
+        <h3 class="block-title">Edit Planet</h3>
+    </div>
+    <div class="block-content block-content-full">
+        <div class="row">
+            <div class="col-lg-8">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                    <input type="hidden" asp-for="PlanetId" />
+
+                    <div class="mb-4">
+                        <label asp-for="PlanetName" class="form-label"></label>
+                        <input asp-for="PlanetName" class="form-control" />
+                        <span asp-validation-for="PlanetName" class="text-danger fs-sm"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="GalaxyId" class="form-label"></label>
+                        <select asp-for="GalaxyId" asp-items="ViewBag.GalaxyId" class="form-select">
+                            <option value="">-- Select Galaxy --</option>
+                        </select>
+                        <span asp-validation-for="GalaxyId" class="text-danger fs-sm"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save me-1"></i> Update</button>
+                        <a asp-action="Index" class="btn btn-alt-secondary ms-1"><i class="fa fa-arrow-left me-1"></i> Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

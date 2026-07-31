@@ -1,0 +1,295 @@
+is_global = true
+build_property.TargetFramework = net10.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = MvcCrudProject
+build_property.RootNamespace = MvcCrudProject
+build_property.ProjectDir = /Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Area/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXJlYS9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Area/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXJlYS9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Area/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXJlYS9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Area/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXJlYS9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Area/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXJlYS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Branch/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQnJhbmNoL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Branch/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQnJhbmNoL0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Branch/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQnJhbmNoL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Branch/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQnJhbmNoL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Branch/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQnJhbmNoL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/City/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2l0eS9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/City/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2l0eS9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/City/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2l0eS9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/City/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2l0eS9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/City/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2l0eS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Company/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tcGFueS9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Company/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tcGFueS9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Company/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tcGFueS9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Company/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tcGFueS9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Company/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tcGFueS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Continent/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGluZW50L0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Continent/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGluZW50L0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Continent/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGluZW50L0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Continent/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGluZW50L0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Continent/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29udGluZW50L0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Country/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291bnRyeS9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Country/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291bnRyeS9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Country/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291bnRyeS9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Country/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291bnRyeS9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Country/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ291bnRyeS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Department/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVwYXJ0bWVudC9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Department/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVwYXJ0bWVudC9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Department/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVwYXJ0bWVudC9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Department/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVwYXJ0bWVudC9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Department/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVwYXJ0bWVudC9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Employee/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Employee/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Employee/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Employee/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Employee/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRW1wbG95ZWUvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Galaxy/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2FsYXh5L0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Galaxy/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2FsYXh5L0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Galaxy/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2FsYXh5L0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Galaxy/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2FsYXh5L0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Galaxy/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2FsYXh5L0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Planet/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbmV0L0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Planet/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbmV0L0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Planet/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbmV0L0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Planet/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbmV0L0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Planet/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbmV0L0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Region/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaW9uL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Region/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaW9uL0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Region/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaW9uL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Region/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaW9uL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Region/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVnaW9uL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Section/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VjdGlvbi9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Section/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VjdGlvbi9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Section/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VjdGlvbi9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Section/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VjdGlvbi9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Section/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VjdGlvbi9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Shared/_SidebarNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19TaWRlYmFyTmF2LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/zaidyehyaaiasra/Desktop/asp step by step/Template Project/MvcCrudProject/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-rfcjdeqkfk

@@ -1,0 +1,37 @@
+@model MvcCrudProject.ViewModels.SectionViewModel
+@{
+    ViewData["Title"] = "Add Section";
+    ViewData["PageTitle"] = "Add Section";
+    ViewData["PageSubtitle"] = "Create a new section entry";
+}
+<div class="block block-rounded">
+    <div class="block-header block-header-default">
+        <h3 class="block-title">Add Section</h3>
+    </div>
+    <div class="block-content block-content-full">
+        <div class="row">
+            <div class="col-lg-8">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                    <div class="mb-4">
+                        <label asp-for="SectionName" class="form-label">Section Name</label>
+                        <input asp-for="SectionName" class="form-control" placeholder="Enter section name" />
+                        <span asp-validation-for="SectionName" class="text-danger fs-sm"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="DepartmentId" class="form-label">Department</label>
+                        <select asp-for="DepartmentId" asp-items="ViewBag.DepartmentId" class="form-select">
+                            <option value="">-- Select Department --</option>
+                        </select>
+                        <span asp-validation-for="DepartmentId" class="text-danger fs-sm"></span>
+                    </div>
+                    <div class="mb-4">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save me-1"></i> Save</button>
+                        <a asp-action="Index" class="btn btn-alt-secondary ms-1"><i class="fa fa-arrow-left me-1"></i> Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts { @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } }

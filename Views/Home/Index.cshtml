@@ -1,0 +1,131 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["PageTitle"] = "Dashboard";
+    ViewData["PageSubtitle"] = "Organization Manager Overview";
+}
+
+<div class="row">
+    <!-- Geographic Cards -->
+    <div class="col-12 mb-2">
+        <h5 class="fw-bold text-muted text-uppercase fs-xs tracking-wider mb-3">
+            <i class="fa fa-globe me-1"></i> Geographic Hierarchy
+        </h5>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Galaxy" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-primary">@ViewBag.GalaxyCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Galaxies</div>
+                <i class="fa fa-star fa-2x text-primary opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Planet" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-success">@ViewBag.PlanetCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Planets</div>
+                <i class="fa fa-circle fa-2x text-success opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Continent" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-warning">@ViewBag.ContinentCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Continents</div>
+                <i class="fa fa-map fa-2x text-warning opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Region" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-info">@ViewBag.RegionCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Regions</div>
+                <i class="fa fa-map-marked-alt fa-2x text-info opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Country" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-danger">@ViewBag.CountryCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Countries</div>
+                <i class="fa fa-flag fa-2x text-danger opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="City" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-primary">@ViewBag.CityCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Cities</div>
+                <i class="fa fa-city fa-2x text-primary opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Area" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-success">@ViewBag.AreaCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Areas</div>
+                <i class="fa fa-map-pin fa-2x text-success opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+
+    <!-- Organization Cards -->
+    <div class="col-12 mt-2 mb-2">
+        <h5 class="fw-bold text-muted text-uppercase fs-xs tracking-wider mb-3">
+            <i class="fa fa-building me-1"></i> Organization Structure
+        </h5>
+    </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Company" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-warning">@ViewBag.CompanyCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Companies</div>
+                <i class="fa fa-building fa-2x text-warning opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Branch" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-info">@ViewBag.BranchCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Branches</div>
+                <i class="fa fa-code-branch fa-2x text-info opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Department" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-danger">@ViewBag.DepartmentCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Departments</div>
+                <i class="fa fa-sitemap fa-2x text-danger opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Section" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-primary">@ViewBag.SectionCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Sections</div>
+                <i class="fa fa-layer-group fa-2x text-primary opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <a asp-controller="Employee" asp-action="Index" class="block block-rounded block-link-shadow text-center">
+            <div class="block-content block-content-full py-4">
+                <div class="fs-1 fw-bold text-success">@ViewBag.EmployeeCount</div>
+                <div class="fs-sm fw-medium text-muted mt-1">Employees</div>
+                <i class="fa fa-users fa-2x text-success opacity-25 mt-2"></i>
+            </div>
+        </a>
+    </div>
+</div>

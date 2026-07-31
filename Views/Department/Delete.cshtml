@@ -1,0 +1,26 @@
+@model MvcCrudProject.ViewModels.DepartmentViewModel
+@{
+    ViewData["Title"] = "Delete Department";
+    ViewData["PageTitle"] = "Delete Department";
+    ViewData["PageSubtitle"] = "Confirm deletion";
+}
+<div class="block block-rounded">
+    <div class="block-header block-header-default">
+        <h3 class="block-title text-danger"><i class="fa fa-exclamation-triangle me-1"></i> Confirm Delete</h3>
+    </div>
+    <div class="block-content block-content-full">
+        <p class="fw-semibold">Are you sure you want to delete the following Department?</p>
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Department Name</dt>
+            <dd class="col-sm-9">@Model.DepartmentName</dd>
+            <dt class="col-sm-3">Branch</dt>
+            <dd class="col-sm-9">@Model.BranchName</dd>
+        </dl>
+        <hr class="my-4">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="DepartmentId" />
+            <button type="submit" class="btn btn-danger"><i class="fa fa-trash me-1"></i> Delete</button>
+            <a asp-action="Index" class="btn btn-alt-secondary ms-1"><i class="fa fa-times me-1"></i> Cancel</a>
+        </form>
+    </div>
+</div>
