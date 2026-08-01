@@ -34,10 +34,9 @@ public class CompanyController : Controller
     {
         if (ModelState.IsValid)
         {
-            var company = vm.ToModel();
-            await _companyRepo.AddAsync(company);
+            await _companyRepo.AddAsync(vm.ToModel());
             await _companyRepo.SaveChangesAsync();
-            return RedirectToAction("Create", "Branch", new { companyId = company.CompanyId });
+            return RedirectToAction(nameof(Index));
         }
         return View(vm);
     }
